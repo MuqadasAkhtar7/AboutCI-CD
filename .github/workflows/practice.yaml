@@ -1,0 +1,17 @@
+name: Greeting on variable day
+
+on:
+  workflow_dispatch
+  
+jobs:
+  greeting_job:
+    runs-on: ubuntu-latest
+    environment: development
+     
+    steps:
+      - name: "Say Hello Mona it's Monday"
+        env:
+          name: ali
+        run: |
+          echo "HELLO"
+          echo "$name"
