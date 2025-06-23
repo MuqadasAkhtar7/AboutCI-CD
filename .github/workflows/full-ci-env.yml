@@ -42,7 +42,7 @@ jobs:
         run: echo "Dev API Key: ${{ secrets.API_KEY }}"
 
       - name: Simulated Deploy
-        run: echo "✅ Deployed to DEVELOPMENT"
+        run: echo "Deployed to DEVELOPMENT"
 
   staging:
     name: Staging Lint & Simulate Deploy
@@ -83,7 +83,7 @@ jobs:
         run: echo "Staging API Key: ${{ secrets.API_KEY }}"
 
       - name: Simulated Deploy
-        run: echo "✅ Deployed to STAGING"
+        run: echo "Deployed to STAGING"
 
   production:
     name: Production Lint & Simulate Deploy
