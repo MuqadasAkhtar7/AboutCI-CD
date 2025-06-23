@@ -124,4 +124,4 @@ jobs:
         run: echo "Production API Key: ${{ secrets.API_KEY }}"
 
       - name: Simulated Deploy
-        run: echo "✅ Deployed to PRODUCTION"
+        run: echo "Deployed to PRODUCTION"
