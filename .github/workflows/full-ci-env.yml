@@ -8,6 +8,7 @@ jobs:
     name: Development Lint & Simulate Deploy
     runs-on: ubuntu-latest
     environment: development
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -23,12 +24,10 @@ jobs:
           npm install stylelint stylelint-config-standard htmlhint --save-dev
 
       - name: Run Stylelint (Dev)
-        run: |
-          npx stylelint "styles/**/*.css" > stylelint-dev.txt || true
+        run: npx stylelint "styles/**/*.css" > stylelint-dev.txt || true
 
       - name: Run HTMLHint (Dev)
-        run: |
-          npx htmlhint "src/**/*.html" > htmlhint-dev.txt || true
+        run: npx htmlhint "src/**/*.html" > htmlhint-dev.txt || true
 
       - name: Upload Lint Artifacts (Dev)
         uses: actions/upload-artifact@v4
@@ -49,6 +48,7 @@ jobs:
     needs: development
     runs-on: ubuntu-latest
     environment: staging
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -58,14 +58,14 @@ jobs:
         with:
           node-version: 18
 
+      - name: Install Dependencies
+        run: npm install
+
       - name: Run Stylelint (Staging)
-        run: |
-          npm install
-          npx stylelint "styles/**/*.css" > stylelint-staging.txt || true
+        run: npx stylelint "styles/**/*.css" > stylelint-staging.txt || true
 
       - name: Run HTMLHint (Staging)
-        run: |
-          npx htmlhint "src/**/*.html" > htmlhint-staging.txt || true
+        run: npx htmlhint "src/**/*.html" > htmlhint-staging.txt || true
 
       - name: Upload Lint Artifacts (Staging)
         uses: actions/upload-artifact@v4
@@ -86,6 +86,7 @@ jobs:
     needs: staging
     runs-on: ubuntu-latest
     environment: production
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -95,14 +96,14 @@ jobs:
         with:
           node-version: 18
 
+      - name: Install Dependencies
+        run: npm install
+
       - name: Run Stylelint (Prod)
-        run: |
-          npm install
-          npx stylelint "styles/**/*.css" > stylelint-prod.txt || true
+        run: npx stylelint "styles/**/*.css" > stylelint-prod.txt || true
 
       - name: Run HTMLHint (Prod)
-        run: |
-          npx htmlhint "src/**/*.html" > htmlhint-prod.txt || true
+        run: npx htmlhint "src/**/*.html" > htmlhint-prod.txt || true
 
       - name: Upload Lint Artifacts (Prod)
         uses: actions/upload-artifact@v4
