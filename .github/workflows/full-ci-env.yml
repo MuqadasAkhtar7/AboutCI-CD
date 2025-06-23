@@ -1,0 +1,119 @@
+name: Full CI/CD with Environments
+
+on:
+  workflow_dispatch:
+
+jobs:
+  development:
+    name: Development Lint & Simulate Deploy
+    runs-on: ubuntu-latest
+    environment: development
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install Linting Tools
+        run: |
+          npm init -y
+          npm install stylelint stylelint-config-standard htmlhint --save-dev
+
+      - name: Run Stylelint (Dev)
+        run: |
+          npx stylelint "styles/**/*.css" > stylelint-dev.txt || true
+
+      - name: Run HTMLHint (Dev)
+        run: |
+          npx htmlhint "src/**/*.html" > htmlhint-dev.txt || true
+
+      - name: Upload Lint Artifacts (Dev)
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-dev
+          path: |
+            stylelint-dev.txt
+            htmlhint-dev.txt
+
+      - name: Use Dev Secret
+        run: echo "Dev API Key: ${{ secrets.API_KEY }}"
+
+      - name: Simulated Dev Deploy
+        run: echo "✅ Deployed to DEVELOPMENT"
+
+  staging:
+    name: Staging Job
+    needs: development
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Run Stylelint (Staging)
+        run: |
+          npm install
+          npx stylelint "styles/**/*.css" > stylelint-staging.txt || true
+
+      - name: Run HTMLHint (Staging)
+        run: |
+          npx htmlhint "src/**/*.html" > htmlhint-staging.txt || true
+
+      - name: Upload Lint Artifacts (Staging)
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-staging
+          path: |
+            stylelint-staging.txt
+            htmlhint-staging.txt
+
+      - name: Use Staging Secret
+        run: echo "Staging API Key: ${{ secrets.API_KEY }}"
+
+      - name: Simulated Staging Deploy
+        run: echo "✅ Deployed to STAGING"
+
+  production:
+    name: Production Job
+    needs: staging
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Run Stylelint (Prod)
+        run: |
+          npm install
+          npx stylelint "styles/**/*.css" > stylelint-prod.txt || true
+
+      - name: Run HTMLHint (Prod)
+        run: |
+          npx htmlhint "src/**/*.html" > htmlhint-prod.txt || true
+
+      - name: Upload Lint Artifacts (Prod)
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-production
+          path: |
+            stylelint-prod.txt
+            htmlhint-prod.txt
+
+      - name: Use Production Secret
+        run: echo "Production API Key: ${{ secrets.API_KEY }}"
+
+      - name: Simulated Production Deploy
+        run: echo "✅ Deployed to PRODUCTION"
