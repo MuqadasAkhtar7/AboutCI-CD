@@ -8,6 +8,7 @@ jobs:
     name: Development Lint & Simulate Deploy
     runs-on: ubuntu-latest
     environment: development
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -39,16 +40,19 @@ jobs:
             htmlhint-dev.txt
 
       - name: Use secret
-        run: echo "Dev API Key: ${{ secrets.API_KEY }}"
+        run: |
+          echo "Dev API Key: ${{ secrets.API_KEY }}"
 
       - name: Simulated Deploy
-        run: echo "Deployed to DEVELOPMENT"
+        run: |
+          echo "Deployed to DEVELOPMENT"
 
   staging:
     name: Staging Lint & Simulate Deploy
     runs-on: ubuntu-latest
     needs: development
     environment: staging
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -80,16 +84,19 @@ jobs:
             htmlhint-staging.txt
 
       - name: Use secret
-        run: echo "Staging API Key: ${{ secrets.API_KEY }}"
+        run: |
+          echo "Staging API Key: ${{ secrets.API_KEY }}"
 
       - name: Simulated Deploy
-        run: echo "Deployed to STAGING"
+        run: |
+          echo "Deployed to STAGING"
 
   production:
     name: Production Lint & Simulate Deploy
     runs-on: ubuntu-latest
     needs: staging
     environment: production
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -121,7 +128,9 @@ jobs:
             htmlhint-prod.txt
 
       - name: Use secret
-        run: echo "Production API Key: ${{ secrets.API_KEY }}"
+        run: |
+          echo "Production API Key: ${{ secrets.API_KEY }}"
 
       - name: Simulated Deploy
-        run: echo "Deployed to PRODUCTION"
+        run: |
+          echo "Deployed to PRODUCTION"
