@@ -8,7 +8,6 @@ jobs:
     name: Development Lint & Simulate Deploy
     runs-on: ubuntu-latest
     environment: development
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -22,15 +21,12 @@ jobs:
         run: |
           npm init -y
           npm install stylelint stylelint-config-standard htmlhint --save-dev
-
       - name: Run stylelint
         run: |
           npx stylelint "styles/**/*.css" > stylelint-dev.txt || echo "stylelint errors ignored"
-
       - name: Run htmlhint
         run: |
           npx htmlhint "src/**/*.html" > htmlhint-dev.txt || echo "htmlhint errors ignored"
-
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -38,21 +34,16 @@ jobs:
           path: |
             stylelint-dev.txt
             htmlhint-dev.txt
-
       - name: Use secret
-        run: |
-          echo "Dev API Key: ${{ secrets.API_KEY }}"
-
+        run: echo "Dev API Key: ${{ secrets.API_KEY }}"
       - name: Simulated Deploy
-        run: |
-          echo "Deployed to DEVELOPMENT"
+        run: echo "Deployed to DEVELOPMENT"
 
   staging:
     name: Staging Lint & Simulate Deploy
     runs-on: ubuntu-latest
     needs: development
     environment: staging
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -66,15 +57,12 @@ jobs:
         run: |
           npm init -y
           npm install stylelint stylelint-config-standard htmlhint --save-dev
-
       - name: Run stylelint
         run: |
           npx stylelint "styles/**/*.css" > stylelint-staging.txt || echo "stylelint errors ignored"
-
       - name: Run htmlhint
         run: |
           npx htmlhint "src/**/*.html" > htmlhint-staging.txt || echo "htmlhint errors ignored"
-
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -82,21 +70,16 @@ jobs:
           path: |
             stylelint-staging.txt
             htmlhint-staging.txt
-
       - name: Use secret
-        run: |
-          echo "Staging API Key: ${{ secrets.API_KEY }}"
-
+        run: echo "Staging API Key: ${{ secrets.API_KEY }}"
       - name: Simulated Deploy
-        run: |
-          echo "Deployed to STAGING"
+        run: echo "Deployed to STAGING"
 
   production:
     name: Production Lint & Simulate Deploy
     runs-on: ubuntu-latest
     needs: staging
     environment: production
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -110,15 +93,12 @@ jobs:
         run: |
           npm init -y
           npm install stylelint stylelint-config-standard htmlhint --save-dev
-
       - name: Run stylelint
         run: |
           npx stylelint "styles/**/*.css" > stylelint-prod.txt || echo "stylelint errors ignored"
-
       - name: Run htmlhint
         run: |
           npx htmlhint "src/**/*.html" > htmlhint-prod.txt || echo "htmlhint errors ignored"
-
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -126,11 +106,7 @@ jobs:
           path: |
             stylelint-prod.txt
             htmlhint-prod.txt
-
       - name: Use secret
-        run: |
-          echo "Production API Key: ${{ secrets.API_KEY }}"
-
+        run: echo "Production API Key: ${{ secrets.API_KEY }}"
       - name: Simulated Deploy
-        run: |
-          echo "Deployed to PRODUCTION"
+        run: echo "Deployed to PRODUCTION"
